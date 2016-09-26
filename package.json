@@ -1,0 +1,27 @@
+{
+  "name": "spawl-mariadb",
+  "version": "0.0.1",
+  "description": "SPAWL Connector for MariaDB/MySQL",
+  "main": "spawl-mariadb.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quagliato/spawl-mariadb"
+  },
+  "keywords": [
+    "spawl",
+    "mariadb",
+    "mysql"
+  ],
+  "author": "Eduardo Quagliato <eduardo@quagliato.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/quagliato/spawl-mariadb/issues"
+  },
+  "dependencies": {
+    "moment": "^2.15.1",
+    "mysql": "^2.11.1"
+  }
+}
