@@ -6,6 +6,24 @@
 var moment                   = require('moment');
 var mysql                    = require('mysql');
 
+var _filled = function(value){
+  if (value !== null && value !== undefined) {
+    if (typeof value === "string" && value !== "") return true;
+    if (typeof value === "function") return true;
+    if (typeof value === "boolean" && (value === true || value === false)) return true;
+    if (typeof value === "number") return true;
+    if (typeof value === "object") {
+      if (value.hasOwnProperty("length") && value.length > 0) return true;
+      var count = 0;
+      for (var prop in value) {
+        count++;
+      }
+      if (count > 0) return true;
+    }
+  }
+  return false;
+}
+
 var MariaDB = function(sessionConfig, sessionLogger){
   if (!_filled(sessionConfig.DB_HOST) ||
     !_filled(sessionConfig.DB_USER) ||
