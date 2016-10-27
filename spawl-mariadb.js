@@ -51,7 +51,7 @@ SpawlMariaDBConnector.prototype.get = function(entity, fields, filter, order, pa
   }
 
   if ((size !== undefined && size > 0) && (page !== undefined && page > 0)) {
-    sql = "{0} LIMIT {1} OFFSET {2}".format(sql, (size * page), (size * (page - 1)));
+    sql = "{0} LIMIT {1} OFFSET {2}".format(sql, size, (size * (page - 1)));
   }
 
   this.mariadb.query(sql, function(size, rows){
