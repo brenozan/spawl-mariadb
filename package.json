@@ -1,6 +1,6 @@
 {
   "name": "spawl-mariadb",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "SPAWL Connector for MariaDB/MySQL",
   "main": "spawl-mariadb.js",
   "scripts": {

@@ -72,30 +72,30 @@ var MariaDB = function(sessionConfig, sessionLogger){
     connection.query(queryStr, function(err, rows, fields) {
       if (err) {
         mariadbObj.logger("SQL: {0} - {1}".format(queryStr, err), "CRITICAL");
-        callback(-1);
-      } else {
-        var size = 0;
-        var is_select = true;
-        if (rows.affectedRows>0) { // Insert, update, delete
-          is_select = false;
-        } else if (rows && rows != null && rows.length > 0) {
-          size = rows.length;
-        }
-
-        var result = [];
-
-        if (size > 0) {
-          for (var i = 0; i < rows.length; i++) {
-            var newRow = {};
-            for (var j = 0; j < fields.length; j++) {
-              newRow[fields[j].name]= rows[i][fields[j].name]
-            }
-            result[result.length] = newRow
-          }
-        }
-
-        if (size === 1) result = result[0];
+        return callback(-1);
       }
+      
+      var size = 0;
+      var is_select = true;
+      if (rows.affectedRows>0) { // Insert, update, delete
+        is_select = false;
+      } else if (rows && rows != null && rows.length > 0) {
+        size = rows.length;
+      }
+
+      var result = [];
+
+      if (size > 0) {
+        for (var i = 0; i < rows.length; i++) {
+          var newRow = {};
+          for (var j = 0; j < fields.length; j++) {
+            newRow[fields[j].name]= rows[i][fields[j].name]
+          }
+          result[result.length] = newRow
+        }
+      }
+
+      if (size === 1) result = result[0];
       
       callback(parseInt(size), result);
       mariadbObj.disconnectDB(connection);
