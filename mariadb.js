@@ -3,10 +3,9 @@
 // Date: 2015-07-29
 // Location: Curitiba, Brasil
 
-var moment                   = require('moment');
-var mysql                    = require('mysql');
+var mysql                    = require ('mysql');
 
-var _filled = function(value){
+var _filled = function (value) {
   if (value !== null && value !== undefined) {
     if (typeof value === "string" && value !== "") return true;
     if (typeof value === "function") return true;
@@ -24,7 +23,12 @@ var _filled = function(value){
   return false;
 }
 
-var MariaDB = function(sessionConfig, sessionLogger){
+/*
+ * 2015-07-29, Curitiba - Brazil
+ * Author: Eduardo Quagliato<eduardo@quagliato.me>
+ * Description: Constructor
+ */
+function MariaDB (sessionConfig, sessionLogger) {
   if (!_filled(sessionConfig.DB_HOST) ||
     !_filled(sessionConfig.DB_USER) ||
     !_filled(sessionConfig.DB_PASS) ||
@@ -46,7 +50,12 @@ var MariaDB = function(sessionConfig, sessionLogger){
 
   mariadbObj = this;
 
-  this.connectDB = function(){
+  /*
+   * 2015-07-29, Curitiba - Brazil
+   * Author: Eduardo Quagliato<eduardo@quagliato.me>
+   * Description: Creates the connection to the database
+   */
+  this.connectDB = function () {
     var conn = mysql.createConnection({
       host     : mariadbObj.dbConfig.DB_HOST,
       user     : mariadbObj.dbConfig.DB_USER,
@@ -61,12 +70,23 @@ var MariaDB = function(sessionConfig, sessionLogger){
     return conn;
   };
 
-  this.disconnectDB = function(conn){
+  /*
+   * 2015-07-29, Curitiba - Brazil
+   * Author: Eduardo Quagliato<eduardo@quagliato.me>
+   * Description: Disconnects from database
+   */
+  this.disconnectDB = function (conn) {
     mariadbObj.logger("Connection to MariaDB Server ended.");
     conn.end();
   };
 
- this.query = function(queryStr, callback){
+  
+  /*
+   * 2015-07-29, Curitiba - Brazil
+   * Author: Eduardo Quagliato<eduardo@quagliato.me>
+   * Description: Execute a query to the database
+   */
+  this.query = function (queryStr, callback) {
     mariadbObj.logger("SQL: {0}".format(queryStr));
     var connection = mariadbObj.connectDB();
     connection.query(queryStr, function(err, rows, fields) {
@@ -76,26 +96,26 @@ var MariaDB = function(sessionConfig, sessionLogger){
       }
       
       var size = 0;
+      var result = [];
       var is_select = true;
-      if (rows.affectedRows>0) { // Insert, update, delete
+      if (rows.affectedRows > 0) { // Insert, update, delete
         is_select = false;
+        result = rows;
       } else if (rows && rows != null && rows.length > 0) {
         size = rows.length;
-      }
 
-      var result = [];
-
-      if (size > 0) {
-        for (var i = 0; i < rows.length; i++) {
-          var newRow = {};
-          for (var j = 0; j < fields.length; j++) {
-            newRow[fields[j].name]= rows[i][fields[j].name]
+        if (size > 0) {
+          for (var i = 0; i < rows.length; i++) {
+            var newRow = {};
+            for (var j = 0; j < fields.length; j++) {
+              newRow[fields[j].name]= rows[i][fields[j].name]
+            }
+            result.push(newRow);
           }
-          result[result.length] = newRow
         }
-      }
 
-      if (size === 1) result = result[0];
+        if (size === 1) result = result[0];
+      }
       
       callback(parseInt(size), result);
       mariadbObj.disconnectDB(connection);
