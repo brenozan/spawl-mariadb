@@ -221,6 +221,34 @@ SpawlMariaDBConnector.prototype.delete = function (entity, filter, callback) {
 };
 
 /*
+ * 2017-03-03, Curitiba - Brazil
+ * Author: Eduardo Quagliato<eduardo@quagliato.me>
+ * Description: COUNT
+ */
+SpawlMariaDBConnector.prototype.count = function (entity, filter, callback) {
+  if (this.mariadb === null || this.mariadb === undefined) {
+    throw new Error('Could not stablish connection to MariaDB.');
+  }
+  
+  var spawlMariaDBConnector = this;
+
+  var sql = 'SELECT COUNT(*) as COUNT_RESULT FROM {0}'.format(entity);
+
+  var whereStr = '';
+
+  if (filter !== undefined && filter.hasOwnProperty('filter')) {
+    whereStr = spawlMariaDBConnector.createWhere(whereStr, filter['filter']);
+    sql = '{0} WHERE {1}'.format(sql, whereStr);
+  }
+
+  this.mariadb.query(sql, function(size, rows){
+    if (size === -1) return callback(new Error('Could not process the request.'));
+
+    callback(undefined, rows.COUNT_RESULT);
+  });
+};
+
+/*
  * 2015-09-23, Curitiba - Brazil
  * Author: Eduardo Quagliato<eduardo@quagliato.me>
  * Description: Create the where clause
