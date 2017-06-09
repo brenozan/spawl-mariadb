@@ -142,7 +142,7 @@ SpawlMariaDBConnector.prototype.save = function (entity, object, callback) {
 
   var spawlMariaDBConnector = this;
 
-  var sql = 'INSERT IGNORE INTO {0}'.format(entity);
+  var sql = 'INSERT {0}'.format(entity); //allow insert parameters while table name args.. I will not implement options
   var fieldsStr = '';
   var valuesStr = '';
 
