@@ -142,7 +142,7 @@ SpawlMariaDBConnector.prototype.save = function (entity, object, callback) {
 
   var spawlMariaDBConnector = this;
 
-  var sql = 'INSERT INTO {0}'.format(entity);
+  var sql = 'INSERT IGNORE INTO {0}'.format(entity);
   var fieldsStr = '';
   var valuesStr = '';
 
