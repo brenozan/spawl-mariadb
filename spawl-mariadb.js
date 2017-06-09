@@ -121,7 +121,7 @@ SpawlMariaDBConnector.prototype.update = function (entity, object, fields, filte
   var whereStr = '';
 
   if (filter !== undefined && filter.hasOwnProperty('filter')) {
-    whereStr = createWhere(whereStr, filter['filter']);
+    whereStr = spawlMariaDBConnector.createWhere(whereStr, filter['filter']);
     sql = '{0} WHERE {1}'.format(sql, whereStr);
   }
 
